@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>푸에르토리코 점수 계산기 </title>
+    <style>
+        /* 2010년대 스큐어모피즘 감성 및 항구 테마 */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a120e;
+            background-image: radial-gradient(circle, #2c1e17 0%, #110b08 100%);
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            margin: 0;
+            padding: 8px;
+            color: #4a3b32;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fdfbf7;
+            background-image: linear-gradient(to bottom, #fdfbf7, #f0e6cc);
+            border: 6px solid #4e3529;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.8), inset 0 0 40px rgba(139,69,19,0.15);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        /* 헤더 디자인 */
+        .header {
+            text-align: center;
+            border-bottom: 3px double #8b4513;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 19px;
+            color: #4e3529;
+            margin: 0 0 5px 0;
+            text-shadow: 1px 1px 0px #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .header-sub {
+            display: inline-block;
+            font-size: 11px;
+            color: #8b4513;
+            font-weight: bold;
+            background: #e8d7bc;
+            padding: 3px 10px;
+            border: 1px solid #c2a685;
+            border-radius: 12px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* 컨트롤 패널 (플레이어 수 설정) */
+        .controls {
+            background: #ebd8b7;
+            padding: 10px 12px;
+            border: 1px solid #b89778;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #5c4033;
+            font-size: 13px;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .controls button {
+            background: linear-gradient(to bottom, #d2b48c, #70381c);
+            color: white;
+            border: 1px solid #3e2723;
+            padding: 6px 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.25);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            font-size: 13px;
+        }
+
+        .controls button:active {
+            background: linear-gradient(to bottom, #70381c, #d2b48c);
+            transform: translateY(1px);
+        }
+
+        .controls span#player-count-display {
+            font-size: 15px;
+            background: #fff;
+            padding: 2px 10px;
+            border: 1px inset #8b4513;
+            border-radius: 3px;
+            color: #70381c;
+        }
+
+        /* 테이블 래퍼 (모바일 부드러운 스크롤) */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 12px;
+            border: 2px solid #b89778;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 580px;
+        }
+
+        th, td {
+            border: 1px solid #e0d2bc;
+            padding: 7px 6px;
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(to bottom, #e2c299, #b58863);
+            color: #3e2723;
+            font-size: 12px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .category-name {
+            text-align: left;
+            font-weight: bold;
+            background: #f4ebd0;
+            color: #4e3529;
+            width: 220px;
+            min-width: 205px;
+            padding-left: 8px;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .category-sub {
+            font-weight: normal; 
+            font-size: 9px; 
+            color: #7a5c4c;
+            margin-top: 1px;
+        }
+
+        /* 플레이어 이름 입력 인풋 */
+        .player-name-input {
+            background: transparent;
+            border: none;
+            color: #3e2723;
+            font-weight: bold;
+            font-size: 12px;
+            width: 75px;
+            text-align: center;
+        }
+
+        .player-name-input:focus {
+            outline: 1px dashed #8b4513;
+            background: rgba(255,255,255,0.7);
+        }
+
+        /* 점수 입력 필드 스타일 (0 투명화 및 모바일 줌 방지용 16px 대응) */
+        input[type="number"] {
+            width: 52px;
+            padding: 6px 4px;
+            text-align: center;
+            border: 1px solid #c2a685;
+            background: #ffffff;
+            font-size: 16px; /* 모바일 자동 줌 방지 */
+            font-weight: bold;
+            color: #8b4513;
+            border-radius: 3px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* 빈칸이거나 0일 때 투명하게 보이도록 플레이스홀더 처리 */
+        input[type="number"]::placeholder {
+            color: #d0c2b0;
+            font-weight: normal;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        /* 실시간 총합 및 동점 조건 안내 */
+        .total-row {
+            background: linear-gradient(to bottom, #e4c49c, #c09164) !important;
+            font-weight: bold;
+            color: #2c221e;
+            font-size: 14px;
+        }
+
+        .tie-breaker-info {
+            background: #f4ebd0;
+            border: 1px dashed #a07855;
+            padding: 8px 10px;
+            font-size: 11px;
+            color: #5c4033;
+            text-align: center;
+            border-radius: 4px;
+            line-height: 1.35;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* 푸터 제작자 표시 */
+        .footer {
+            margin-top: 10px;
+            text-align: right;
+            font-size: 11px;
+            color: #d2b48c;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* 모바일 최적화 미디어 쿼리 */
+        @media (max-width: 600px) {
+            body {
+                padding: 2px;
+            }
+            .container {
+                padding: 8px;
+                border-width: 4px;
+            }
+            .header h1 {
+                font-size: 17px;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 6px;
+                align-items: stretch;
+                text-align: center;
+                padding: 8px;
+            }
+            .controls-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+        <h1>
+            <span>🚢</span> 푸에르토리코 점수 계산기
+        </h1>
+        <div class="header-sub">
+            ⚓ 상단 세관 및 총독부 집계 시스템
+        </div>
+    </div>
+
+    <!-- 인원 추가 컨트롤 -->
+    <div class="controls">
+        <span>플레이어 인원수 설정</span>
+        <div class="controls-group">
+            <button onclick="changePlayers(-1)">- 인원 감소</button>
+            <span id="player-count-display">4</span>명
+            <button onclick="changePlayers(1)">인원 증가 +</button>
+        </div>
+    </div>
+
+    <!-- 점수판 테이블 -->
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr id="table-header-row">
+                    <th class="category-name">항목별 분류 / 플레이어</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <td class="category-name">
+                        <div class="category-title"><span>🪙</span> 1. 승점 토큰 합</div>
+                        <div class="category-sub">Victory Point Tokens Sum</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="category-name">
+                        <div class="category-title"><span>🏛️</span> 2. 점유된 건물의 승점</div>
+                        <div class="category-sub">VP from Occupied Buildings</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="category-name">
+                        <div class="category-title"><span>🏰</span> 3. 점유된 고급 건물 추가 승점</div>
+                        <div class="category-sub">Bonus VP from Large Buildings</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="category-name">
+                        <div class="category-title"><span>📜</span> 4. 확장 미션 점수</div>
+                        <div class="category-sub">Expansion Mission Points</div>
+                    </td>
+                </tr>
+                <tr class="total-row">
+                    <td class="category-name" style="background:transparent; color:#2c221e;">
+                        <div class="category-title"><span>⚖️</span> 실시간 총합 점수</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 동점 조건 안내 -->
+    <div class="tie-breaker-info">
+        💡 <strong>규칙 안내:</strong> 동점 발생 시, 잔여 <strong>주화(Doubloons)</strong>와 보유 <strong>상품(Goods)</strong>의 수가 많은 플레이어가 승리합니다!
+    </div>
+</div>
+
+<!-- 제작자 표시 -->
+<div class="footer">
+    제작자: 천상민 ⚓
+</div>
+
+<script>
+    let playerCount = 4; // 기본 인원 4명 (2~5명 지원)
+
+    function renderTable() {
+        const headerRow = document.getElementById('table-header-row');
+        const tbody = document.getElementById('table-body');
+        
+        let headerHTML = '<th class="category-name">항목별 분류 / 플레이어</th>';
+        for (let i = 1; i <= playerCount; i++) {
+            headerHTML += `<th><input type="text" class="player-name-input" value="Player ${i}"></th>`;
+        }
+        headerRow.innerHTML = headerHTML;
+
+        const rows = tbody.getElementsByTagName('tr');
+        
+        for (let r = 0; r < 4; r++) {
+            let rowHTML = rows[r].children[0].outerHTML; 
+            for (let i = 1; i <= playerCount; i++) {
+                // placeholder="0"을 적용하여 0이 입력되지 않았을 때 투명하게 보이도록 설정
+                rowHTML += `<td><input type="number" class="score-input row-${r}" placeholder="0" oninput="calculateTotals()"></td>`;
+            }
+            rows[r].innerHTML = rowHTML;
+        }
+
+        let totalRowHTML = '<td class="category-name" style="background:transparent; color:#2c221e;"><div class="category-title"><span>⚖️</span> 실시간 총합 점수</div></td>';
+        for (let i = 1; i <= playerCount; i++) {
+            totalRowHTML += `<td id="total-p${i}" style="font-size:16px; color:#5c4033; font-weight:bold;">0</td>`;
+        }
+        rows[4].innerHTML = totalRowHTML;
+        
+        calculateTotals();
+    }
+
+    function changePlayers(val) {
+        if (playerCount + val >= 2 && playerCount + val <= 5) {
+            playerCount += val;
+            document.getElementById('player-count-display').innerText = playerCount;
+            renderTable();
+        }
+    }
+
+    function calculateTotals() {
+        for (let i = 1; i <= playerCount; i++) {
+            let sum = 0;
+            for (let r = 0; r < 4; r++) {
+                const inputs = document.querySelectorAll(`.row-${r}`);
+                if (inputs[i-1]) {
+                    let val = parseInt(inputs[i-1].value) || 0;
+                    sum += val;
+                }
+            }
+            const totalCell = document.getElementById(`total-p${i}`);
+            if (totalCell) {
+                totalCell.innerText = sum;
+            }
+        }
+    }
+
+    renderTable();
+</script>
+
+</body>
+</html>

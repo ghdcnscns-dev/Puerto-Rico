@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>푸에르토리코 점수 계산기 </title>
+    <title>푸에르토리코 점수 계산기 (Puerto Rico Score Calculator)</title>
     <style>
-        /* 2010년대 스큐어모피즘 감성 및 항구 테마 */
+        /* 2010년대 스큐어모피즘 감성 및 항구 테마 - 원클릭 이름 수정 최적화 */
         * {
             box-sizing: border-box;
         }
@@ -15,34 +15,34 @@
             background-image: radial-gradient(circle, #2c1e17 0%, #110b08 100%);
             font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             margin: 0;
-            padding: 8px;
+            padding: 6px;
             color: #4a3b32;
             -webkit-text-size-adjust: 100%;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
             background: #fdfbf7;
             background-image: linear-gradient(to bottom, #fdfbf7, #f0e6cc);
-            border: 6px solid #4e3529;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.8), inset 0 0 40px rgba(139,69,19,0.15);
-            border-radius: 8px;
-            padding: 12px;
+            border: 4px solid #4e3529;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 0 30px rgba(139,69,19,0.15);
+            border-radius: 6px;
+            padding: 10px;
         }
 
         /* 헤더 디자인 */
         .header {
             text-align: center;
             border-bottom: 3px double #8b4513;
-            padding-bottom: 10px;
-            margin-bottom: 12px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .header h1 {
-            font-size: 19px;
+            font-size: 17px;
             color: #4e3529;
-            margin: 0 0 5px 0;
+            margin: 0 0 4px 0;
             text-shadow: 1px 1px 0px #fff;
             display: flex;
             align-items: center;
@@ -52,20 +52,20 @@
 
         .header-sub {
             display: inline-block;
-            font-size: 11px;
+            font-size: 10px;
             color: #8b4513;
             font-weight: bold;
             background: #e8d7bc;
-            padding: 3px 10px;
+            padding: 2px 8px;
             border: 1px solid #c2a685;
-            border-radius: 12px;
+            border-radius: 10px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
         }
 
         /* 컨트롤 패널 (플레이어 수 설정) */
         .controls {
             background: #ebd8b7;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid #b89778;
             box-shadow: inset 0 1px 4px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.05);
             border-radius: 6px;
@@ -75,7 +75,7 @@
             justify-content: space-between;
             font-weight: bold;
             color: #5c4033;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .controls-group {
@@ -88,13 +88,13 @@
             background: linear-gradient(to bottom, #d2b48c, #70381c);
             color: white;
             border: 1px solid #3e2723;
-            padding: 6px 12px;
+            padding: 5px 10px;
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
             box-shadow: 0 2px 3px rgba(0,0,0,0.25);
             text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-            font-size: 13px;
+            font-size: 11px;
         }
 
         .controls button:active {
@@ -103,100 +103,136 @@
         }
 
         .controls span#player-count-display {
-            font-size: 15px;
+            font-size: 14px;
             background: #fff;
-            padding: 2px 10px;
+            padding: 1px 8px;
             border: 1px inset #8b4513;
             border-radius: 3px;
             color: #70381c;
         }
 
-        /* 테이블 래퍼 (모바일 부드러운 스크롤) */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        /* 플레이어 이름 설정 바 */
+        .players-name-bar {
+            background: #f4ebd0;
+            border: 1px solid #b89778;
+            border-radius: 6px;
+            padding: 8px;
             margin-bottom: 12px;
-            border: 2px solid #b89778;
-            border-radius: 4px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            background: #fff;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 580px;
-        }
-
-        th, td {
-            border: 1px solid #e0d2bc;
-            padding: 7px 6px;
+        .players-name-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #5c4033;
+            margin-bottom: 6px;
             text-align: center;
         }
 
-        th {
-            background: linear-gradient(to bottom, #e2c299, #b58863);
-            color: #3e2723;
-            font-size: 12px;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-        }
-
-        .category-name {
-            text-align: left;
-            font-weight: bold;
-            background: #f4ebd0;
-            color: #4e3529;
-            width: 220px;
-            min-width: 205px;
-            padding-left: 8px;
-        }
-
-        .category-title {
+        .players-name-inputs {
             display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .category-sub {
-            font-weight: normal; 
-            font-size: 9px; 
-            color: #7a5c4c;
-            margin-top: 1px;
-        }
-
-        /* 플레이어 이름 입력 인풋 */
         .player-name-input {
-            background: transparent;
-            border: none;
+            background: #fff;
+            border: 1px solid #8b4513;
             color: #3e2723;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
+            padding: 4px 6px;
+            border-radius: 3px;
             width: 75px;
             text-align: center;
         }
 
         .player-name-input:focus {
-            outline: 1px dashed #8b4513;
-            background: rgba(255,255,255,0.7);
+            background: #fff9e6;
+            outline: 2px solid #8b4513;
         }
 
-        /* 점수 입력 필드 스타일 (0 투명화 및 모바일 줌 방지용 16px 대응) */
+        /* 카테고리별 그룹 컨테이너 */
+        #categories-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .category-group-card {
+            background: #fff;
+            border: 2px solid #b89778;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .category-group-header {
+            background: linear-gradient(to bottom, #e2c299, #b58863);
+            padding: 6px 10px;
+            border-bottom: 1px solid #b89778;
+        }
+
+        .category-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #3e2723;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .category-sub {
+            font-size: 9px;
+            color: #6b4d3d;
+            margin-top: 1px;
+        }
+
+        .category-group-body {
+            padding: 8px 10px;
+            background: #faf6ee;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .player-score-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #4a3b32;
+            border-bottom: 1px dashed #e0d2bc;
+            padding-bottom: 5px;
+        }
+
+        .player-score-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .player-label {
+            font-weight: bold;
+            color: #5c4033;
+        }
+
+        /* 점수 입력 필드 스타일 (모바일 줌 방지 대응) */
         input[type="number"] {
-            width: 52px;
-            padding: 6px 4px;
+            width: 65px;
+            padding: 4px;
             text-align: center;
             border: 1px solid #c2a685;
             background: #ffffff;
-            font-size: 16px; /* 모바일 자동 줌 방지 */
+            font-size: 16px; /* 모바일 아이폰 자동 줌 방지 */
+            transform: scale(0.9);
             font-weight: bold;
             color: #8b4513;
             border-radius: 3px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        /* 빈칸이거나 0일 때 투명하게 보이도록 플레이스홀더 처리 */
         input[type="number"]::placeholder {
             color: #d0c2b0;
             font-weight: normal;
@@ -208,58 +244,83 @@
             margin: 0; 
         }
 
-        /* 실시간 총합 및 동점 조건 안내 */
-        .total-row {
-            background: linear-gradient(to bottom, #e4c49c, #c09164) !important;
-            font-weight: bold;
+        /* 실시간 총합 카드 영역 */
+        .total-summary-card {
+            background: linear-gradient(to bottom, #e4c49c, #c09164);
+            border: 2px solid #8b4513;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
             color: #2c221e;
-            font-size: 14px;
         }
 
+        .total-summary-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 4px;
+        }
+
+        .total-scores-grid {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            gap: 4px;
+        }
+
+        .total-player-box {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #8b4513;
+            flex: 1;
+        }
+
+        .total-player-name {
+            font-size: 10px;
+            color: #5c4033;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .total-player-score {
+            font-size: 14px;
+            color: #3e2723;
+            font-weight: bold;
+        }
+
+        /* 동점 조건 안내 */
         .tie-breaker-info {
             background: #f4ebd0;
             border: 1px dashed #a07855;
-            padding: 8px 10px;
-            font-size: 11px;
+            padding: 6px 8px;
+            font-size: 10px;
             color: #5c4033;
             text-align: center;
             border-radius: 4px;
-            line-height: 1.35;
+            line-height: 1.3;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 8px;
         }
 
-        /* 푸터 제작자 표시 */
+        /* 제작자 표시 푸터 */
         .footer {
-            margin-top: 10px;
-            text-align: right;
+            text-align: center;
             font-size: 11px;
-            color: #d2b48c;
+            color: #f0d5b7;
             font-weight: bold;
             text-shadow: 1px 1px 2px #000;
-        }
-
-        /* 모바일 최적화 미디어 쿼리 */
-        @media (max-width: 600px) {
-            body {
-                padding: 2px;
-            }
-            .container {
-                padding: 8px;
-                border-width: 4px;
-            }
-            .header h1 {
-                font-size: 17px;
-            }
-            .controls {
-                flex-direction: column;
-                gap: 6px;
-                align-items: stretch;
-                text-align: center;
-                padding: 8px;
-            }
-            .controls-group {
-                justify-content: center;
-            }
+            background: #3e2723;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #8b4513;
         }
     </style>
 </head>
@@ -272,132 +333,163 @@
             <span>🚢</span> 푸에르토리코 점수 계산기
         </h1>
         <div class="header-sub">
-            ⚓ 상단 세관 및 총독부 집계 시스템
+            ⚓ 카테고리 그룹별 집계 시스템 (제작자: 천상민)[cite: 1]
         </div>
     </div>
 
     <!-- 인원 추가 컨트롤 -->
     <div class="controls">
-        <span>플레이어 인원수 설정</span>
+        <span>플레이어 인원수</span>
         <div class="controls-group">
-            <button onclick="changePlayers(-1)">- 인원 감소</button>
+            <button onclick="changePlayers(-1)">- 명</button>
             <span id="player-count-display">4</span>명
-            <button onclick="changePlayers(1)">인원 증가 +</button>
+            <button onclick="changePlayers(1)">+ 명</button>
         </div>
     </div>
 
-    <!-- 점수판 테이블 -->
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr id="table-header-row">
-                    <th class="category-name">항목별 분류 / 플레이어</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <tr>
-                    <td class="category-name">
-                        <div class="category-title"><span>🪙</span> 1. 승점 토큰 합</div>
-                        <div class="category-sub">Victory Point Tokens Sum</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="category-name">
-                        <div class="category-title"><span>🏛️</span> 2. 점유된 건물의 승점</div>
-                        <div class="category-sub">VP from Occupied Buildings</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="category-name">
-                        <div class="category-title"><span>🏰</span> 3. 점유된 고급 건물 추가 승점</div>
-                        <div class="category-sub">Bonus VP from Large Buildings</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="category-name">
-                        <div class="category-title"><span>📜</span> 4. 확장 미션 점수</div>
-                        <div class="category-sub">Expansion Mission Points</div>
-                    </td>
-                </tr>
-                <tr class="total-row">
-                    <td class="category-name" style="background:transparent; color:#2c221e;">
-                        <div class="category-title"><span>⚖️</span> 실시간 총합 점수</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <!-- 플레이어 이름 설정 영역 -->
+    <div class="players-name-bar">
+        <div class="players-name-title">✏️ 플레이어 이름 설정 (터치하면 전체 선택됨)</div>
+        <div class="players-name-inputs" id="player-names-container">
+            <!-- 동적으로 생성됨 -->
+        </div>
+    </div>
+
+    <!-- 카테고리 그룹 카드 리스트 영역 -->
+    <div id="categories-container">
+        <!-- 동적으로 생성됨 -->
+    </div>
+
+    <!-- 실시간 총합 점수판 -->
+    <div class="total-summary-card">
+        <div class="total-summary-title">⚖️ 실시간 플레이어별 총합 점수</div>
+        <div class="total-scores-grid" id="total-scores-container">
+            <!-- 동적으로 생성됨 -->
+        </div>
     </div>
 
     <!-- 동점 조건 안내 -->
     <div class="tie-breaker-info">
-        💡 <strong>규칙 안내:</strong> 동점 발생 시, 잔여 <strong>주화(Doubloons)</strong>와 보유 <strong>상품(Goods)</strong>의 수가 많은 플레이어가 승리합니다!
+        💡 <strong>규칙 안내:</strong> 동점 시, 잔여 <strong>주화(Doubloons)</strong> 및 보유 <strong>상품(Goods)</strong>이 많은 사람이 승리합니다!
     </div>
-</div>
 
-<!-- 제작자 표시 -->
-<div class="footer">
-    제작자: 천상민 ⚓
+    <!-- 제작자 표시 -->
+    <div class="footer">
+        ⚓ Designed & Created by <strong>천상민</strong>[cite: 1]
+    </div>
 </div>
 
 <script>
     let playerCount = 4; // 기본 인원 4명 (2~5명 지원)
 
-    function renderTable() {
-        const headerRow = document.getElementById('table-header-row');
-        const tbody = document.getElementById('table-body');
-        
-        let headerHTML = '<th class="category-name">항목별 분류 / 플레이어</th>';
-        for (let i = 1; i <= playerCount; i++) {
-            headerHTML += `<th><input type="text" class="player-name-input" value="Player ${i}"></th>`;
-        }
-        headerRow.innerHTML = headerHTML;
+    const categories = [
+        { title: "🪙 1. 승점 토큰 합", sub: "Victory Point Tokens Sum" },
+        { title: "🏛️ 2. 점유된 건물의 승점", sub: "VP from Occupied Buildings" },
+        { title: "🏰 3. 점유된 고급 건물 추가 승점", sub: "Bonus VP from Large Buildings" },
+        { title: "📜 4. 확장 미션 점수", sub: "Expansion Mission Points" }
+    ];
 
-        const rows = tbody.getElementsByTagName('tr');
-        
-        for (let r = 0; r < 4; r++) {
-            let rowHTML = rows[r].children[0].outerHTML; 
-            for (let i = 1; i <= playerCount; i++) {
-                // placeholder="0"을 적용하여 0이 입력되지 않았을 때 투명하게 보이도록 설정
-                rowHTML += `<td><input type="number" class="score-input row-${r}" placeholder="0" oninput="calculateTotals()"></td>`;
-            }
-            rows[r].innerHTML = rowHTML;
-        }
-
-        let totalRowHTML = '<td class="category-name" style="background:transparent; color:#2c221e;"><div class="category-title"><span>⚖️</span> 실시간 총합 점수</div></td>';
-        for (let i = 1; i <= playerCount; i++) {
-            totalRowHTML += `<td id="total-p${i}" style="font-size:16px; color:#5c4033; font-weight:bold;">0</td>`;
-        }
-        rows[4].innerHTML = totalRowHTML;
-        
+    function renderUI() {
+        renderPlayerNames();
+        renderCategories();
         calculateTotals();
+    }
+
+    function renderPlayerNames() {
+        const container = document.getElementById('player-names-container');
+        let html = '';
+        for (let i = 1; i <= playerCount; i++) {
+            const existingInput = document.getElementById(`name-p${i}`);
+            const currentName = existingInput ? existingInput.value : `Player ${i}`;
+            // onfocus="this.select()" 추가하여 클릭 시 전체 선택 및 수정 용이하게 설정
+            html += `<input type="text" id="name-p${i}" class="player-name-input" value="${currentName}" onfocus="this.select()" oninput="updateAllNames()">`;
+        }
+        container.innerHTML = html;
+    }
+
+    function renderCategories() {
+        const container = document.getElementById('categories-container');
+        let html = '';
+
+        for (let r = 0; r < categories.length; r++) {
+            html += `
+                <div class="category-group-card">
+                    <div class="category-group-header">
+                        <div class="category-title">${categories[r].title}</div>
+                        <div class="category-sub">${categories[r].sub}</div>
+                    </div>
+                    <div class="category-group-body">
+            `;
+
+            for (let i = 1; i <= playerCount; i++) {
+                const nameInput = document.getElementById(`name-p${i}`);
+                const pName = nameInput ? nameInput.value : `Player ${i}`;
+                html += `
+                    <div class="player-score-row">
+                        <span class="player-label" id="label-r${r}-p${i}">${pName}</span>
+                        <input type="number" class="score-input row-${r} p-${i-1}" placeholder="0" oninput="calculateTotals()">
+                    </div>
+                `;
+            }
+
+            html += `
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    function updateAllNames() {
+        for (let i = 1; i <= playerCount; i++) {
+            const nameInput = document.getElementById(`name-p${i}`);
+            const pName = nameInput ? nameInput.value : `Player ${i}`;
+            
+            for (let r = 0; r < categories.length; r++) {
+                const label = document.getElementById(`label-r${r}-p${i}`);
+                if (label) label.innerText = pName;
+            }
+            const totalNameLabel = document.getElementById(`total-name-p${i}`);
+            if (totalNameLabel) totalNameLabel.innerText = pName;
+        }
     }
 
     function changePlayers(val) {
         if (playerCount + val >= 2 && playerCount + val <= 5) {
             playerCount += val;
             document.getElementById('player-count-display').innerText = playerCount;
-            renderTable();
+            renderUI();
         }
     }
 
     function calculateTotals() {
+        const totalContainer = document.getElementById('total-scores-container');
+        let totalHtml = '';
+
         for (let i = 1; i <= playerCount; i++) {
             let sum = 0;
-            for (let r = 0; r < 4; r++) {
-                const inputs = document.querySelectorAll(`.row-${r}`);
-                if (inputs[i-1]) {
-                    let val = parseInt(inputs[i-1].value) || 0;
-                    sum += val;
+            for (let r = 0; r < categories.length; r++) {
+                const input = document.querySelector(`.row-${r}.p-${i-1}`);
+                if (input) {
+                    sum += parseInt(input.value) || 0;
                 }
             }
-            const totalCell = document.getElementById(`total-p${i}`);
-            if (totalCell) {
-                totalCell.innerText = sum;
-            }
+            const nameInput = document.getElementById(`name-p${i}`);
+            const pName = nameInput ? nameInput.value : `Player ${i}`;
+
+            totalHtml += `
+                <div class="total-player-box">
+                    <span class="total-player-name" id="total-name-p${i}">${pName}</span>
+                    <span class="total-player-score" id="total-p${i}">${sum}</span>
+                </div>
+            `;
         }
+        totalContainer.innerHTML = totalHtml;
     }
 
-    renderTable();
+    // 초기 실행
+    renderUI();
 </script>
 
 </body>
